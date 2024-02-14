@@ -1,0 +1,13 @@
+config {
+    type: 'table',
+    schema:'fca_report'
+}
+
+SELECT Business_Name,Resolved,Cases, (Cases - Resolved) AS Unresolved
+from ${ref('dim_business')} 
+INNER JOIN (
+SELECT r.Business_Name,IFNULL(r.Resolved_Cases,0) AS Resolved,IFNULL(n.Total_New_Cases,0) AS Cases FROM `bold-quanta-414120.fica_dev.business-complaints-resolved` r 
+LEFT JOIN `bold-quanta-414120.fica_dev.business-complaints-new` n
+USING(Business_Name)
+)
+USING(Business_Name)

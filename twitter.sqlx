@@ -1,0 +1,20 @@
+config {
+    type:"table",
+    schema: "fica_dev"
+}
+
+WITH cleaned_data AS (
+SELECT PARSE_DATE('%m/%d/%Y',date) as date, SPLIT(REGEXP_EXTRACT(content,'@\\w+'),'@')[SAFE_OFFSET(1)] as company, sentiment,country FROM `bold-quanta-414120.fica_dev.twitter`
+)
+
+SELECT *,
+CASE 
+    WHEN company = 'askesure' THEN 'Esure'
+    WHEN company = 'asksheilas' THEN 'Sheilas'
+    WHEN company = 'Sainsburys_Bank' THEN 'Sainsburys Bank'
+    WHEN company = 'sainsburys' THEN 'Sainsburys Bank'
+    WHEN company = 'nfum' THEN 'NFU Mutal'
+    WHEN company = 'HastingsDirect' THEN 'Hastings Direct'
+ELSE company END AS Firm, 'Twitter' AS Source
+FROM cleaned_data
+WHERE company is not NULL 

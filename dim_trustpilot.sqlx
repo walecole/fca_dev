@@ -1,0 +1,19 @@
+config {
+    type:"table",
+    schema: "fica_dev"
+}
+
+WITH cleaned_data AS (
+SELECT Date, SUBSTR(Title, 1, INSTR(Title, ' :') - 1) as company, star_rating FROM `bold-quanta-414120.fica_dev.TrustPilot`
+)
+
+select Date, star_rating,company,
+CASE WHEN star_rating <= 30 THEN 'negative'
+    WHEN star_rating >40 and star_rating <= 60 THEN 'neutral'
+    ELSE 'positive'
+END AS sentiment,
+CASE 
+WHEN company = 'esure' THEN 'Esure' 
+ELSE company
+END AS firm, 'Trust Pilot' AS Source
+ from cleaned_data

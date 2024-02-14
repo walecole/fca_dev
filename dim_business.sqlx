@@ -1,0 +1,6 @@
+config {
+    type: 'table',
+    schema:'fica_dev'
+}
+
+SELECT DISTINCT(Business_Name) AS Business_Name FROM `bold-quanta-414120.fica_dev.business-complaints-resolved`

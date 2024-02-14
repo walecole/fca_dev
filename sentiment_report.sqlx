@@ -1,0 +1,10 @@
+config {
+    type: 'table',
+    schema:'fca_report'
+}
+
+SELECT date,sentiment,firm,source from ${ref('dim_forum')}
+UNION ALL 
+SELECT date,sentiment,firm,source from ${ref('dim_trustpilot')}
+UNION ALL
+SELECT date,sentiment,firm,source from ${ref('dim_twitter')}

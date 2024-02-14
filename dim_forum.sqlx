@@ -1,0 +1,21 @@
+config {
+    type:"table",
+    schema: "fica_dev"
+}
+
+WITH cleaned_data AS (
+    SELECT date,site_name,sentiment,
+    CASE WHEN Mention_content LIKE '%esure%' THEN 'Esure'
+    WHEN Mention_content LIKE '%Hastings Direct%' THEN 'Hastings Direct'
+    WHEN Mention_content LIKE '%Sheila%' THEN 'Sheilas'
+    WHEN Mention_content LIKE '%rac%'  THEN 'RAC'
+    WHEN Mention_content LIKE '%NFU Mutal%' THEN 'NFU Mutal'
+    WHEN Mention_content LIKE '%NFU%' THEN 'NFU Mutal'
+    WHEN Mention_content LIKE '%LV=%' THEN 'LV='
+    WHEN Mention_content LIKE '%AA insurance%' THEN 'AA Insurance'
+    ELSE 'Unknown'
+    END AS firm, 'Forums' AS Source
+    FROM `bold-quanta-414120.fica_dev.Forum`
+)
+
+SELECT * FROM cleaned_data
